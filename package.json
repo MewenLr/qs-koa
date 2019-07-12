@@ -1,0 +1,40 @@
+{
+  "name": "qs-koa",
+  "version": "1.0.0",
+  "description": "Quickstarter for koa server.",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon",
+    "start": "node server",
+    "lint": "eslint --ext .js ./",
+    "lint:fix": "eslint --ext .js ./ --fix"
+  },
+  "dependencies": {
+    "koa": "*",
+    "dotenv": "*",
+    "koa-jwt": "*",
+    "mongoose": "*",
+    "bcryptjs": "*",
+    "koa-cors": "*",
+    "koa-router": "*",
+    "koa-passport": "*",
+    "jsonwebtoken": "*",
+    "passport-jwt": "*",
+    "koa-bodyparser": "*"
+  },
+  "devDependencies": {
+    "jest": "*",
+    "nodemon": "*",
+    "supertest": "*",
+    "eslint": "^5.16.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-config-airbnb-base": "^13.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [],
+  "author": "mewenlr",
+  "license": "ISC"
+}
