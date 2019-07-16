@@ -12,8 +12,8 @@ module.exports = {
     { key: 'password', type: 'string', data: password, dataRequired: true },
   ],
 
-  updUser: (username, updates = {}) => [
-    { key: 'username', type: 'string', data: username, dataRequired: true },
+  updUser: (email, updates = {}) => [
+    { key: 'email', type: 'string', data: email, dataRequired: true },
     {
       key: 'updates',
       type: 'object',
@@ -29,6 +29,10 @@ module.exports = {
 
   delUser: username => [
     { key: 'username', type: 'string', data: username, dataRequired: true },
+  ],
+
+  resetPwdUser: email => [
+    { key: 'email', type: 'string', data: email, dataRequired: true },
   ],
 
 }

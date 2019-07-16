@@ -18,6 +18,7 @@
     "bcryptjs": "*",
     "koa-cors": "*",
     "koa-router": "*",
+    "nodemailer": "*",
     "koa-passport": "*",
     "jsonwebtoken": "*",
     "passport-jwt": "*",

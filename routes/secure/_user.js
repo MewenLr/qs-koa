@@ -17,8 +17,8 @@ module.exports = router
     '/user',
     (ctx, next) => translation(ctx, next),
     async (ctx, next) => {
-      const { username, updates } = ctx.request.body
-      const toughList = await toughUser.updUser(username, updates)
+      const { email, updates } = ctx.request.body
+      const toughList = await toughUser.updUser(email, updates)
       await tough(ctx, next, toughList)
     },
     userController.updUser,

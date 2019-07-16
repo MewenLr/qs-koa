@@ -7,7 +7,7 @@ module.exports = (ctx) => {
 
     hash: data => new Promise((res, rej) => {
       bcryptjs.hash(data, 10, (err, hash) => {
-        if (err) rej({ code: 400, msg: trans.errorHash() })
+        if (err) rej({ code: 400, msg: trans.failHash() })
         res(hash)
       })
     }),
@@ -15,7 +15,7 @@ module.exports = (ctx) => {
     compareHash: (data, hash, key) => new Promise((res, rej) => {
       bcryptjs.compare(data, hash, (err, match) => {
         if (err) rej({ code: 400, msg: err })
-        if (!match) rej({ code: 400, msg: trans.errorCompareHash(key) })
+        if (!match) rej({ code: 400, msg: trans.failCompareHash(key) })
         res(match)
       })
     }),

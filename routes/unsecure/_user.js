@@ -29,3 +29,13 @@ module.exports = router
     },
     userController.authUser,
   )
+  .post(
+    '/user/reset-password',
+    (ctx, next) => translation(ctx, next),
+    async (ctx, next) => {
+      const { email } = ctx.request.body
+      const toughList = toughUser.resetPwdUser(email)
+      await tough(ctx, next, toughList)
+    },
+    userController.resetPwdUser,
+  )

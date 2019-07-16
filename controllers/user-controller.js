@@ -3,6 +3,7 @@ const User = require('../schemas/User')
 const rules = require('../middlewares/rules')
 const config = require('../config/parameters')
 const bcrypt = require('../middlewares/bcrypt')
+const mailer = require('../middlewares/mailer')
 const queries = require('../middlewares/queries')
 
 module.exports = {
@@ -33,7 +34,7 @@ module.exports = {
     try {
       const { doc } = await queries(ctx).findOne(User, { username })
       await bcrypt(ctx).compareHash(password, doc.password, 'password')
-      const token = jwToken.sign({ user: doc._id }, config.secret, { expiresIn: 14400 })
+      const token = jwToken.sign({ user: doc._id }, config.secret, { expiresIn: 86400 })
       ctx.status = 200
       ctx.body = {
         msg: 'Token created',
@@ -51,7 +52,8 @@ module.exports = {
   },
 
   updUser: async (ctx) => {
-    const { username, updates } = ctx.request.body
+    const trans = ctx.state.transFile
+    const { email, updates } = ctx.request.body
 
     try {
       if (updates.username) {
@@ -66,10 +68,11 @@ module.exports = {
         await rules(ctx).validateEmail(updates.email)
         await queries(ctx).check(User, { email: updates.email })
       }
-      const res = await queries(ctx).updateOne(User, { username }, updates)
+      const res = await queries(ctx).updateOne(User, { email }, updates)
       const updatedData = {}
       const keys = Object.keys(updates)
       keys.map(key => (key !== 'password' ? (updatedData[key] = res.doc[key]) : false))
+      if (keys.length === 1 && keys[0] === 'password') res.msg = trans.pwdUpdated()
       ctx.status = res.code
       ctx.body = {
         msg: res.msg,
@@ -86,6 +89,19 @@ module.exports = {
 
     try {
       const res = await queries(ctx).deleteOne(User, { username }, 'user')
+      ctx.status = res.code
+      ctx.body = { msg: res.msg }
+    } catch (err) {
+      ctx.status = err.code || 400
+      ctx.body = { msg: err.msg }
+    }
+  },
+
+  resetPwdUser: async (ctx) => {
+    const { email } = ctx.request.body
+
+    try {
+      const res = await mailer(email)
       ctx.status = res.code
       ctx.body = { msg: res.msg }
     } catch (err) {

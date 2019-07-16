@@ -31,7 +31,7 @@ module.exports = (ctx) => {
       const [key, value] = Object.entries(query)[0]
       collection.findOne(query, (err, doc) => {
         if (err) rej({ code: 400, msg: err })
-        if (doc === null) rej({ code: 400, msg: trans.docNotFound(key, value) })
+        if (doc === null) rej({ code: 404, msg: trans.docNotFound(key, value) })
         res({ code: 200, doc })
       })
     }),
@@ -44,7 +44,7 @@ module.exports = (ctx) => {
         { new: true, useFindAndModify: false },
         (err, doc) => {
           if (err) rej({ code: 400, msg: trans.failUpdate() })
-          if (doc === null) rej({ code: 400, msg: trans.docNotFound(key, value) })
+          if (doc === null) rej({ code: 404, msg: trans.docNotFound(key, value) })
           res({ code: 200, msg: trans.successUpdate(), doc })
         },
       )
@@ -54,7 +54,7 @@ module.exports = (ctx) => {
       collection.deleteOne(query, (err, doc) => {
         const value = Object.values(query)[0]
         if (err) rej({ code: 400, msg: trans.failDelete() })
-        if (doc.deletedCount === 0) rej({ code: 400, msg: trans.docNotFound(key, value) })
+        if (doc.deletedCount === 0) rej({ code: 404, msg: trans.docNotFound(key, value) })
         res({ code: 200, msg: trans.successDelete(key) })
       })
     }),
