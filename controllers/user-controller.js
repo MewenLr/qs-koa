@@ -5,13 +5,17 @@ const config = require('../config/parameters')
 const bcrypt = require('../middlewares/bcrypt')
 const mailer = require('../middlewares/mailer')
 const queries = require('../middlewares/queries')
+const { knight } = require('../middlewares/knight')
+const knightUser = require('../config/knight-list/user')
 
 module.exports = {
 
   regUser: async (ctx) => {
     const { username, email, password } = ctx.request.body
+    const knightList = knightUser.regUser(username, password, email)
 
     try {
+      await knight(ctx, knightList)
       await rules(ctx).validateUsername(username)
       await rules(ctx).validatePassword(password)
       await rules(ctx).validateEmail(email)
@@ -30,8 +34,10 @@ module.exports = {
 
   authUser: async (ctx) => {
     const { username, password } = ctx.request.body
+    const knightList = knightUser.authUser(username, password)
 
     try {
+      await knight(ctx, knightList)
       const { doc } = await queries(ctx).findOne(User, { username })
       await bcrypt(ctx).compareHash(password, doc.password, 'password')
       const token = jwToken.sign({ user: doc._id }, config.secret, { expiresIn: 86400 })
@@ -54,8 +60,10 @@ module.exports = {
   updUser: async (ctx) => {
     const trans = ctx.state.transFile
     const { email, updates } = ctx.request.body
+    const knightList = knightUser.updUser(email, updates)
 
     try {
+      await knight(ctx, knightList)
       if (updates.username) {
         await rules(ctx).validateUsername(updates.username)
         await queries(ctx).check(User, { username: updates.username })
@@ -86,8 +94,10 @@ module.exports = {
 
   delUser: async (ctx) => {
     const { username } = ctx.request.body
+    const knightList = knightUser.delUser(username)
 
     try {
+      await knight(ctx, knightList)
       const res = await queries(ctx).deleteOne(User, { username }, 'user')
       ctx.status = res.code
       ctx.body = { msg: res.msg }
@@ -99,8 +109,10 @@ module.exports = {
 
   resetPwdUser: async (ctx) => {
     const { email } = ctx.request.body
+    const knightList = knightUser.resetPwdUser(email)
 
     try {
+      await knight(ctx, knightList)
       const res = await mailer(email)
       ctx.status = res.code
       ctx.body = { msg: res.msg }
