@@ -1,8 +1,8 @@
 process.env.TEST_SERVER = true
 const request = require('supertest')
 const mongoose = require('mongoose')
-const server = require('../server')
-const config = require('../config/parameters')
+const server = require('../../server')
+const config = require('../../config/parameters')
 
 describe('Routes _unsecure:', () => {
   beforeAll(async () => {
@@ -17,27 +17,6 @@ describe('Routes _unsecure:', () => {
     await server.close()
     await mongoose.connection.close()
   })
-
-  // test('/ should respond as expected', async () => {
-  //   const res = await request(server)
-  //     .post('/test/activate')
-  //     .send({
-  //       id: 1,
-  //       name: 'Mike',
-  //     })
-  //     .set('Content-Type', 'application/json')
-  //     .set({
-  //       authorization: 'a_valid_value_goes_here',
-  //       'Content-Type': 'application/json',
-  //     })
-  //     .set('Authorization', 'Bearer ' + token)
-  //   expect(res.status).toEqual(200)
-  //   expect(res.type).toEqual('application/json')
-  //   expect(res.body.data).toEqual('Sending some JSON')
-  //   expect(Object.keys(res.body.person)).toEqual(
-  //     expect.arrayContaining(['name', 'lastname', 'role', 'age']),
-  //   )
-  // })
 
   describe('post: /user/register', () => {
     test('should return \'The attribute email is missing\'', async () => {
@@ -123,7 +102,7 @@ describe('Routes _unsecure:', () => {
           username: 'unsecureuser2',
           password: 'Pass1234',
         })
-      expect(res.status).toEqual(400)
+      expect(res.status).toEqual(404)
       expect(res.type).toEqual('application/json')
       expect(res.body.msg).toEqual('username unsecureuser2 was not found')
     })

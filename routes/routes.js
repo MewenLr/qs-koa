@@ -1,5 +1,5 @@
-const _userSecureRouter = require('./secure/_user')
-const _userUnsecureRouter = require('./unsecure/_user')
+const _userSecureRouter = require('./_secure/_user')
+const _userUnsecureRouter = require('./_unsecure/_user')
 
 module.exports = {
   secureRoutes: (app) => {

@@ -2,16 +2,16 @@ process.env.TEST_SERVER = true
 const request = require('supertest')
 const mongoose = require('mongoose')
 const jwToken = require('jsonwebtoken')
-const server = require('../server')
-const User = require('../schemas/User')
-const config = require('../config/parameters')
-const bcrypt = require('../middlewares/bcrypt')
-const queries = require('../middlewares/queries')
-const userController = require('../controllers/user-controller')
+const server = require('../../server')
+const User = require('../../schemas/User')
+const config = require('../../config/parameters')
+const bcrypt = require('../../middlewares/bcrypt')
+const queries = require('../../middlewares/queries')
+const userController = require('../../controllers/user-controller')
 
 /* eslint-disable global-require, import/no-dynamic-require  */
 async function getAuthorization(lang) {
-  const ctx = { state: { transFile: require(`../config/translations/${lang}-translation.js`) } }
+  const ctx = { state: { transFile: require(`../../config/translations/${lang}-translation.js`) } }
   const { doc } = await queries(ctx).findOne(User, { username: 'secureuser' })
   await bcrypt(ctx).compareHash('Pass1234', doc.password)
   return jwToken.sign({ user: doc._id }, config.secret, { expiresIn: 14400 })
@@ -21,7 +21,7 @@ describe('Routes _secure:', () => {
   function context(username, password, email) {
     return {
       state: {
-        transFile: require('../config/translations/en-translation.js'),
+        transFile: require('../../config/translations/en-translation.js'),
       },
       request: {
         body: {
@@ -84,13 +84,13 @@ describe('Routes _secure:', () => {
       expect(res.error.text).toEqual('Authentication Error')
     })
 
-    test('should return \'Attribute is missing\'', async () => {
+    test('should return \'The object updates is empty\'', async () => {
       const lang = 'en'
       const token = await getAuthorization(lang)
       const res = await request(server)
         .put('/user')
         .send({
-          username: 'secureuser',
+          email: 'testmail@gmail.com',
         })
         .set('Content-Type', 'application/json')
         .set('Accept-Language', lang)
@@ -106,7 +106,7 @@ describe('Routes _secure:', () => {
       const res = await request(server)
         .put('/user')
         .send({
-          username: 'secureuser',
+          email: 'testmail@gmail.com',
           updates: {
             username: 'secureuser2',
           },
@@ -119,15 +119,15 @@ describe('Routes _secure:', () => {
       expect(res.body.msg).toEqual('username secureuser2 already exists')
     })
 
-    test('should return \'Document updated\'', async () => {
+    test('should return \'Successful update\'', async () => {
       const lang = 'en'
       const token = await getAuthorization(lang)
       const res = await request(server)
         .put('/user')
         .send({
-          username: 'secureuser2',
+          email: 'testmail2@gmail.com',
           updates: {
-            username: 'testuser3',
+            username: 'secureuser3',
           },
         })
         .set('Content-Type', 'application/json')
@@ -152,7 +152,7 @@ describe('Routes _secure:', () => {
       expect(res.error.text).toEqual('Authentication Error')
     })
 
-    test('should return \'Attribute is missing\'', async () => {
+    test('should return \'The attribute username is missing\'', async () => {
       const lang = 'en'
       const token = await getAuthorization(lang)
       const res = await request(server)
@@ -165,7 +165,7 @@ describe('Routes _secure:', () => {
       expect(res.body.msg).toEqual('The attribute username is missing')
     })
 
-    test('should return \'Document not found\'', async () => {
+    test('should return \'user secureuser2 was not found\'', async () => {
       const lang = 'en'
       const token = await getAuthorization(lang)
       const res = await request(server)
@@ -176,7 +176,7 @@ describe('Routes _secure:', () => {
         .set('Content-Type', 'application/json')
         .set('Accept-Language', lang)
         .set('Authorization', `Bearer ${token}`)
-      expect(res.status).toEqual(400)
+      expect(res.status).toEqual(404)
       expect(res.type).toEqual('application/json')
       expect(res.body.msg).toEqual('user secureuser2 was not found')
     })
