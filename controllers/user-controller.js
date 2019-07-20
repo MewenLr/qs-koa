@@ -6,7 +6,7 @@ const bcrypt = require('../middlewares/bcrypt')
 const mailer = require('../middlewares/mailer')
 const queries = require('../middlewares/queries')
 const { knight } = require('../middlewares/knight')
-const knightUser = require('../config/knight-list/user')
+const knightUser = require('../config/knight-lists/knight-user')
 
 module.exports = {
 
@@ -113,7 +113,7 @@ module.exports = {
 
     try {
       await knight(ctx, knightList)
-      const res = await mailer(email)
+      const res = await mailer(ctx, email)
       ctx.status = res.code
       ctx.body = { msg: res.msg }
     } catch (err) {

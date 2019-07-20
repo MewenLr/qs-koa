@@ -5,20 +5,20 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: process.env.MAIL_USER,
+    user: process.env.MAIL_PROJECT,
     pass: process.env.MAIL_PASS,
   },
 })
 
-module.exports = (ctx, email) => new Promise((res, rej) => {
+module.exports = (ctx, email, subject, html) => new Promise((res, rej) => {
   const trans = ctx.state.transFile
 
   transporter.sendMail({
-    from: `Fred Foo 👻 <${process.env.MAIL_USER}>`,
+    from: `My Custom Website <${process.env.MAIL_PROJECT}>`,
     to: `${email}`,
-    subject: 'Hello ✔',
-    text: 'Hello world?',
-    html: '<b>Hello world?</b>',
+    subject,
+    text: '',
+    html,
   }, (err) => {
     if (err) rej({ code: 400, msg: trans.failMailer() })
     res({ code: 200, msg: trans.successMailer() })

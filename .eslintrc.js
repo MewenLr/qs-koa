@@ -22,5 +22,9 @@ module.exports = {
     "prefer-promise-reject-errors": 0,
     "no-shadow": [2, { "allow": ["err"] }],
     "import/no-unresolved": [2, { "caseSensitive": false }],
+    "object-curly-newline": ["error", {
+      "ObjectPattern": { "multiline": true },
+      "ExportDeclaration": { "multiline": true }
+    }]
   }
 };
