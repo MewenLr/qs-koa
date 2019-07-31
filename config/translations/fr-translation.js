@@ -10,6 +10,7 @@ module.exports = {
   errorType: atb => `${dict[atb]} a un type incorrect`,
   errorEmptyObject: atb => `L'objet ${dict[atb]} est vide`,
   errorAttribute: atb => `L'attribut ${dict[atb]} est manquant`,
+  errorConfirmAccount: () => 'Vous devez d\'abord confirmer votre compte',
 
   failHash: () => 'Échec de hashage',
   failCompareHash: key => `${dict[key]} doesn't match`,
@@ -26,7 +27,11 @@ module.exports = {
   pwdUpdated: () => 'Mot de passe mis à jour',
   successUpdate: () => 'Mise à jour réussie',
   successDelete: key => `${dict[key]} supprimé`,
-  successMailer: () => 'Email a été bien envoyé',
+  successMail: () => 'Email a été bien envoyé',
+  successConfirmationMail: () => 'Un email de confirmation vous a été envoyé',
+
+  confirmationMailSubject: () => 'Email de confirmation',
+  confirmationMailHtml: token => `<p>Cliquer sur le lien suivant pour confirmer votre compte: http://localhost:3030/confirmation/${token}</p>`,
 
   wrongUsername: () => 'Le nom d\'utilisateur doit uniquement contenir des lettres, des chiffres, _ ou - et être compris entre 3 et 6 caractères',
   wrongEmail: () => 'L\'email ne présente pas le bon format',

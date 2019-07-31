@@ -10,6 +10,11 @@ module.exports = router
     (ctx, next) => translation(ctx, next),
     userController.regUser,
   )
+  .get(
+    '/confirmation/:token',
+    (ctx, next) => translation(ctx, next),
+    userController.regConfirmUser,
+  )
   .post(
     '/user/authenticate',
     (ctx, next) => translation(ctx, next),

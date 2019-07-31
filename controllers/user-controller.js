@@ -11,6 +11,7 @@ const knightUser = require('../config/knight-lists/knight-user')
 module.exports = {
 
   regUser: async (ctx) => {
+    const trans = ctx.state.transFile
     const { username, email, password } = ctx.request.body
     const knightList = knightUser.regUser(username, password, email)
 
@@ -22,8 +23,12 @@ module.exports = {
       await queries(ctx).check(User, { username })
       await queries(ctx).check(User, { email })
       const newUser = new User({ username, password, email })
+      const token = jwToken.sign({ user: newUser._id }, config.secret, { expiresIn: 86400 })
       newUser.password = await bcrypt(ctx).hash(newUser.password)
-      const res = await queries(ctx).save(newUser, 'user')
+      await queries(ctx).save(newUser, 'user')
+      const subject = trans.confirmationMailSubject()
+      const html = trans.confirmationMailHtml(token)
+      const res = await mailer(ctx, email, subject, html, 'mailConfirmation')
       ctx.status = res.code
       ctx.body = { msg: res.msg }
     } catch (err) {
@@ -32,13 +37,27 @@ module.exports = {
     }
   },
 
+  regConfirmUser: async (ctx) => {
+    const { token } = ctx.params
+    try {
+      const decoded = await jwToken.verify(token, config.secret)
+      await queries(ctx).updateOne(User, { _id: decoded.user }, { confirmed: true })
+      ctx.redirect('https://www.google.fr/') // url to app's login page
+    } catch (err) {
+      ctx.status = err.code || 400
+      ctx.body = { msg: err.msg }
+    }
+  },
+
   authUser: async (ctx) => {
+    const trans = ctx.state.transFile
     const { username, password } = ctx.request.body
     const knightList = knightUser.authUser(username, password)
 
     try {
       await knight(ctx, knightList)
       const { doc } = await queries(ctx).findOne(User, { username })
+      if (!doc.confirmed) throw { code: 401, msg: trans.errorConfirmAccount() }
       await bcrypt(ctx).compareHash(password, doc.password, 'password')
       const token = jwToken.sign({ user: doc._id }, config.secret, { expiresIn: 86400 })
       ctx.status = 200
@@ -107,13 +126,16 @@ module.exports = {
     }
   },
 
-  resetPwdUser: async (ctx) => {
+  resetPwdUser: async (ctx) => { // Work in progress
     const { email } = ctx.request.body
     const knightList = knightUser.resetPwdUser(email)
 
     try {
       await knight(ctx, knightList)
-      const res = await mailer(ctx, email)
+      const subject = 'Reset Password'
+      const html = '<p>Link to form to reset password</p>'
+      const res = await mailer(ctx, email, subject, html, 'mailSent')
+      // on click reset pwd in the mail, redirect to form modify pwd
       ctx.status = res.code
       ctx.body = { msg: res.msg }
     } catch (err) {
