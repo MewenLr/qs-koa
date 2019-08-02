@@ -10,13 +10,8 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-module.exports = (ctx, email, subject, html, msg) => new Promise((res, rej) => {
+module.exports = (ctx, email, subject, html, success) => new Promise((res, rej) => {
   const trans = ctx.state.transFile
-
-  const dict = {
-    mailSent: trans.successMail(),
-    mailConfirmation: trans.successConfirmationMail(),
-  }
 
   transporter.sendMail({
     from: `My Custom Website <${process.env.MAIL_PROJECT}>`,
@@ -26,6 +21,6 @@ module.exports = (ctx, email, subject, html, msg) => new Promise((res, rej) => {
     html,
   }, (err) => {
     if (err) rej({ code: 400, msg: trans.failMailer() })
-    res({ code: 200, msg: dict[msg] })
+    res({ code: 200, msg: success })
   })
 })

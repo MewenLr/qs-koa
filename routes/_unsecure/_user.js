@@ -13,7 +13,7 @@ module.exports = router
   .get(
     '/confirmation/:token',
     (ctx, next) => translation(ctx, next),
-    userController.regConfirmUser,
+    userController.cbRegUser,
   )
   .post(
     '/user/authenticate',
@@ -24,4 +24,9 @@ module.exports = router
     '/user/reset-password',
     (ctx, next) => translation(ctx, next),
     userController.resetPwdUser,
+  )
+  .get(
+    '/reset-password:token',
+    (ctx, next) => translation(ctx, next),
+    userController.cbResetPwdUser,
   )
