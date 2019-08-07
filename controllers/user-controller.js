@@ -11,7 +11,6 @@ const knightUser = require('../config/knight-lists/knight-user')
 module.exports = {
 
   regUser: async (ctx) => {
-    const trans = ctx.state.transFile
     const { username, email, password } = ctx.request.body
     const knightList = knightUser.regUser(username, password, email)
 
@@ -26,10 +25,7 @@ module.exports = {
       newUser.password = await bcrypt(ctx).hash(newUser.password)
       await queries(ctx).save(newUser, 'user')
       const token = jwToken.sign({ user: newUser._id }, config.secret, { expiresIn: 86400 })
-      const subject = trans.confirmationMailSubject()
-      const html = trans.confirmationMailHtml(token)
-      const success = trans.successConfirmationMail()
-      const res = await mailer(ctx, email, subject, html, success)
+      const res = await mailer(ctx, email, 'confirmUserMail', { token })
       ctx.status = res.code
       ctx.body = { msg: res.msg }
     } catch (err) {
@@ -42,10 +38,10 @@ module.exports = {
     const { token } = ctx.params
     try {
       const decoded = await jwToken.verify(token, config.secret)
-      await queries(ctx).updateOne(User, { _id: decoded.user }, { confirmed: true })
-      ctx.redirect('https://www.google.fr/') // url vers la page de login
+      await queries(ctx).updateOne(User, { _id: decoded.user }, { confirmed: true }, { expireAt: '' })
+      ctx.redirect('https://www.mywebsite.fr/login')
     } catch (err) {
-      ctx.redirect('https://www.youtube.com/') // url vers la page de register avec error msg "token expired"
+      ctx.redirect('https://www.mywebsite.fr/register?error=token_expired')
     }
   },
 
@@ -127,17 +123,13 @@ module.exports = {
   },
 
   resetPwdUser: async (ctx) => {
-    const trans = ctx.state.transFile
     const { email } = ctx.request.body
     const knightList = knightUser.resetPwdUser(email)
 
     try {
       await knight(ctx, knightList)
       const token = jwToken.sign({ user: email }, config.secret, { expiresIn: 86400 })
-      const subject = trans.resetPwdMailSubject()
-      const html = trans.resetPwdMailHtml(token)
-      const success = trans.successResetPwdMail()
-      const res = await mailer(ctx, email, subject, html, success)
+      const res = await mailer(ctx, email, 'resetPwdMail', { token })
       ctx.status = res.code
       ctx.body = { msg: res.msg }
     } catch (err) {
@@ -146,13 +138,4 @@ module.exports = {
     }
   },
 
-  cbResetPwdUser: async (ctx) => {
-    const { token } = ctx.params
-    try {
-      await jwToken.verify(token, config.secret)
-      ctx.redirect('https://www.google.fr/') // url vers la page de reset password avec un formulaire pour le new pwd
-    } catch (err) {
-      ctx.redirect('https://www.youtube.com/') // url vers la page permettant d'envoyer un email pour reset password
-    }
-  },
 }

@@ -8,10 +8,12 @@
     "dev": "nodemon",
     "start": "node server",
     "lint": "eslint --ext .js ./",
+    "mjml": "./node_modules/.bin/mjml",
     "lint:fix": "eslint --ext .js ./ --fix"
   },
   "dependencies": {
     "koa": "*",
+    "mjml": "*",
     "dotenv": "*",
     "koa-jwt": "*",
     "mongoose": "*",

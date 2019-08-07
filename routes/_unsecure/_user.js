@@ -25,8 +25,3 @@ module.exports = router
     (ctx, next) => translation(ctx, next),
     userController.resetPwdUser,
   )
-  .get(
-    '/reset-password:token',
-    (ctx, next) => translation(ctx, next),
-    userController.cbResetPwdUser,
-  )

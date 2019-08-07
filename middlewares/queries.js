@@ -36,11 +36,11 @@ module.exports = (ctx) => {
       })
     }),
 
-    updateOne: (collection, query, updates) => new Promise((res, rej) => {
+    updateOne: (collection, query, updates, unset) => new Promise((res, rej) => {
       const [key, value] = Object.entries(query)[0]
       collection.findOneAndUpdate(
         query,
-        { $set: updates },
+        { $set: updates, $unset: unset },
         { new: true, useFindAndModify: false },
         (err, doc) => {
           if (err) rej({ code: 400, msg: trans.failUpdate() })

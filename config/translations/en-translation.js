@@ -24,6 +24,7 @@ module.exports = {
   failUpdate: () => 'The update failed',
   failDelete: () => 'Deletion failed',
   failMailer: () => 'Failed to send email',
+  failCompileMjml: () => 'Failed to compile email',
 
   idNotFound: () => 'The id was not found',
   docNotFound: (key, value) => `${dict[key]} ${value} was not found`,
@@ -34,12 +35,16 @@ module.exports = {
   pwdUpdated: () => 'Password updated',
   successUpdate: () => 'Successful update',
   successDelete: key => `${dict[key]} deleted`,
-  successConfirmationMail: () => 'A confirmation email has been sent to you',
+  successConfirmUserMail: () => 'A confirmation email has been sent to you',
   successResetPwdMail: () => 'A email to reset your password has been sent to you',
 
   // mails
-  confirmationMailSubject: () => 'Confirmation email',
-  confirmationMailHtml: token => `<p>Click on the following link to confirm your account: http://localhost:3030/confirmation/${token}</p>`,
-  resetPwdMailSubject: () => 'Reset password email',
-  resetPwdMailHtml: token => `<p>Click on the following link to reset your password: http://localhost:3030/reset-password/${token}</p>`,
+  confirmUserSubject: () => 'MyWebsite - Confirmation user',
+  confirmUserTitle: () => 'Confirmation user',
+  confirmUserText: () => 'Please click on the button below to confirm your account',
+  confirmUserButton: () => 'Confirm account',
+  resetPwdSubject: () => 'MyWebsite - Reset password',
+  resetPwdTitle: () => 'Reset password',
+  resetPwdText: () => 'Please click on the button below to reset your password',
+  resetPwdButton: () => 'Reset password',
 }
