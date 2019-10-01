@@ -10,6 +10,11 @@ const app = new Koa()
 
 // middlewares
 require('dotenv').config()
+require('./middlewares/i18n')(app)
+// app.use((ctx) => {
+//   ctx.i18n.setLocale('fr')
+//   ctx.body = ctx.i18n.__('name', 'mewen')
+// })
 require('./middlewares/mongoose')()
 
 app.use(cors())

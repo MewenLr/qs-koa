@@ -12,19 +12,21 @@
     "lint:fix": "eslint --ext .js ./ --fix"
   },
   "dependencies": {
-    "koa": "*",
-    "mjml": "*",
-    "dotenv": "*",
-    "koa-jwt": "*",
-    "mongoose": "*",
     "bcryptjs": "*",
-    "koa-cors": "*",
-    "koa-router": "*",
-    "nodemailer": "*",
-    "koa-passport": "*",
+    "dotenv": "*",
     "jsonwebtoken": "*",
-    "passport-jwt": "*",
-    "koa-bodyparser": "*"
+    "koa": "*",
+    "koa-bodyparser": "*",
+    "koa-cors": "*",
+    "koa-i18n": "*",
+    "koa-jwt": "*",
+    "koa-locale": "*",
+    "koa-passport": "*",
+    "koa-router": "*",
+    "mjml": "*",
+    "mongoose": "*",
+    "nodemailer": "*",
+    "passport-jwt": "*"
   },
   "devDependencies": {
     "jest": "*",
