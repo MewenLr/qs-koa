@@ -14,20 +14,16 @@ const transporter = nodemailer.createTransport({
 })
 
 module.exports = (ctx, email, mailType, data) => new Promise(async (res, rej) => {
-
   const dict = {
     confirmUserMail: {
       subject: ctx.i18n.__('mail.confirm-user.subject'),
-      // subject: trans.confirmUserSubject(),
       html: confirmUserHtml(ctx, data),
       success: ctx.i18n.__('success.confirm-mail'),
     },
     resetPwdMail: {
       subject: ctx.i18n.__('mail.reset-pwd.subject'),
-      // subject: trans.resetPwdSubject(),
       html: resetPwdHtml(ctx, data),
       success: ctx.i18n.__('success.reset-pwd-mail'),
-      // success: trans.successResetPwdMail(),
     },
   }
 
@@ -46,11 +42,11 @@ module.exports = (ctx, email, mailType, data) => new Promise(async (res, rej) =>
       text: '',
       html: htmlOutput.html,
     }, (err) => {
-      if (err) rej({ code: 400, msg: trans.failMailer() })
+      if (err) rej({ code: 400, msg: ctx.i18n.__('failure.send-mail') })
       res({ code: 200, msg: dict[mailType].success })
     })
   } catch (err) {
     ctx.status = err.code || 400
-    ctx.body = trans.failCompileMjml()
+    ctx.body = ctx.i18n.__('failure.compile-mjml')
   }
 })

@@ -9,5 +9,6 @@ module.exports = (app) => {
     defaultLocale: 'fr',
     extension: '.json',
     filePermissions: '755',
+    updateFiles: false,
   }))
 }

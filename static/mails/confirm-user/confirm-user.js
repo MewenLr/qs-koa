@@ -1,4 +1,4 @@
-module.exports = (trans, data) => `
+module.exports = (ctx, data) => `
 <mjml>
   <mj-head>
     <mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
@@ -13,9 +13,9 @@ module.exports = (trans, data) => `
     <mj-raw><!-- Intro text --></mj-raw>
     <mj-section background-color="#fafafa">
       <mj-column width="400px">
-        <mj-text font-size="20px" font-family="Roboto" color="#626262" align="center">${trans.confirmUserTitle()}</mj-text>
-        <mj-text color="#525252" font-family="Roboto" align="center">${trans.confirmUserText()}</mj-text>
-        <mj-button background-color="#F45E43" href="http://localhost:3030/confirmation/${data.token}">${trans.confirmUserButton()}</mj-button>
+        <mj-text font-size="20px" font-family="Roboto" color="#626262" align="center">${ctx.i18n.__('mail.confirm-user.title')}</mj-text>
+        <mj-text color="#525252" font-family="Roboto" align="center">${ctx.i18n.__('mail.confirm-user.body')}</mj-text>
+        <mj-button background-color="#F45E43" href="http://localhost:3030/confirmation/${data.token}">${ctx.i18n.__('mail.confirm-user.cta')}</mj-button>
       </mj-column>
     </mj-section>
   </mj-body>

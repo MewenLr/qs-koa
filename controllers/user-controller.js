@@ -46,14 +46,13 @@ module.exports = {
   },
 
   authUser: async (ctx) => {
-    const trans = ctx.state.transFile
     const { username, password } = ctx.request.body
     const knightList = knightUser.authUser(username, password)
 
     try {
       await knight(ctx, knightList)
       const { doc } = await queries(ctx).findOne(User, { username })
-      if (!doc.confirmed) throw { code: 401, msg: trans.errorConfirmAccount() }
+      if (!doc.confirmed) throw { code: 401, msg: ctx.i18n.__('error.confirm-account') }
       await bcrypt(ctx).compareHash(password, doc.password, 'password')
       const token = jwToken.sign({ user: doc._id }, config.secret, { expiresIn: 86400 })
       ctx.status = 200
@@ -73,7 +72,6 @@ module.exports = {
   },
 
   updUser: async (ctx) => {
-    const trans = ctx.state.transFile
     const { email, updates } = ctx.request.body
     const knightList = knightUser.updUser(email, updates)
 
@@ -91,11 +89,11 @@ module.exports = {
         await rules(ctx).validateEmail(updates.email)
         await queries(ctx).check(User, { email: updates.email })
       }
-      const res = await queries(ctx).updateOne(User, { email }, updates)
+      const res = await queries(ctx).updateOne(User, { email }, updates, {})
       const updatedData = {}
       const keys = Object.keys(updates)
       keys.map(key => (key !== 'password' ? (updatedData[key] = res.doc[key]) : false))
-      if (keys.length === 1 && keys[0] === 'password') res.msg = trans.pwdUpdated()
+      if (keys.length === 1 && keys[0] === 'password') res.msg = ctx.i18n.__('success.pwd-updated')
       ctx.status = res.code
       ctx.body = {
         msg: res.msg,

@@ -1,5 +1,5 @@
 {
-	"error.attribute": "L'attribut %s est manquant",
+	"error.attribute": "%s est manquant",
 	"error.confirm-account": "Veuillez confirmer votre compte",
 	"error.doc-exists": "%s %s existe déjà",
 	"error.doc-not-found": "%s %s n'a pas été trouvé",
@@ -19,6 +19,11 @@
 	"key.updates": "mis à jour",
 	"key.user": "utilisateur",
 	"key.username": "nom d'utilisateur",
+	"key.z-email": "L'email",
+	"key.z-password": "Le mot de passe",
+	"key.z-updates": "Les mis à jour",
+	"key.z-user": "L'utilisateur",
+	"key.z-username": "Le nom d'utilisateur",
 	"mail.confirm-user.body": "Cliquer sur le bouton ci-dessous pour confirmer votre compte",
 	"mail.confirm-user.cta": "Confirmer votre compte",
 	"mail.confirm-user.subject": "MyWebsite - Confirmation utilisateur",
@@ -35,7 +40,5 @@
 	"success.doc-saved": "%s sauvegardé",
 	"success.pwd-updated": "Mot de passe mis à jour",
 	"success.reset-pwd-mail": "Un email pour modifier votre mot de passe vous a été envoyé",
-	"success.update": "Mise à jour réussie",
-	"keys.username": "keys.username",
-	"not-found": "not-found"
+	"success.update": "Mise à jour réussie"
 }

@@ -12,7 +12,7 @@ module.exports = (ctx) => {
       const [key, value] = Object.entries(query)[0]
       collection.countDocuments(query, (err, count) => {
         if (err) rej({ code: 400, msg: err })
-        if (count > 0) rej({ code: 400, msg: ctx.i18n.__('error.doc-exists', ctx.i18n.__(`key.${key}`), value) })
+        if (count > 0) rej({ code: 400, msg: ctx.i18n.__('error.doc-exists', ctx.i18n.__(`key.z-${key}`), value) })
         res()
       })
     }),
@@ -29,7 +29,7 @@ module.exports = (ctx) => {
       const [key, value] = Object.entries(query)[0]
       collection.findOne(query, (err, doc) => {
         if (err) rej({ code: 400, msg: err })
-        if (!doc) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.${key}`), value) })
+        if (!doc) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.z-${key}`), value) })
         res({ code: 200, doc })
       })
     }),
@@ -42,7 +42,7 @@ module.exports = (ctx) => {
         { new: true, useFindAndModify: false },
         (err, doc) => {
           if (err) rej({ code: 400, msg: ctx.i18n.__('failure.update') })
-          if (!doc) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.${key}`), value) })
+          if (!doc) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.z-${key}`), value) })
           res({ code: 200, msg: ctx.i18n.__('success.update'), doc })
         },
       )
@@ -52,7 +52,7 @@ module.exports = (ctx) => {
       collection.deleteOne(query, (err, doc) => {
         const value = Object.values(query)[0]
         if (err) rej({ code: 400, msg: ctx.i18n.__('failure.delete') })
-        if (!doc.deletedCount) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.${key}`), value) })
+        if (!doc.deletedCount) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.z-${key}`), value) })
         res({ code: 200, msg: ctx.i18n.__('success.delete', ctx.i18n.__(`key.${key}`)) })
       })
     }),

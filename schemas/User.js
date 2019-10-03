@@ -26,7 +26,7 @@ const UserSchema = mongoose.Schema({
   expireAt: {
     type: Date,
     default: Date.now,
-    index: { expires: '1m' },
+    index: { expires: '1d' },
   },
 
 })

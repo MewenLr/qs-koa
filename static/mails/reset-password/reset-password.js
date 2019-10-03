@@ -1,4 +1,4 @@
-module.exports = (trans, data) => `
+module.exports = (ctx, data) => `
 <mjml>
   <mj-head>
     <mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
@@ -13,9 +13,9 @@ module.exports = (trans, data) => `
     <mj-raw><!-- Intro text --></mj-raw>
     <mj-section background-color="#fafafa">
       <mj-column width="400px">
-        <mj-text font-size="20px" font-family="Roboto" color="#626262" align="center">${trans.resetPwdTitle()}</mj-text>
-        <mj-text color="#525252" font-family="Roboto" align="center">${trans.resetPwdText()}</mj-text>
-        <mj-button background-color="#F45E43" href="http://www.mywebsite.fr/reset-password?token=${data.token}">${trans.resetPwdButton()}</mj-button>
+        <mj-text font-size="20px" font-family="Roboto" color="#626262" align="center">${ctx.i18n.__('mail.reset-pwd.title')}</mj-text>
+        <mj-text color="#525252" font-family="Roboto" align="center">${ctx.i18n.__('mail.reset-pwd.body')}</mj-text>
+        <mj-button background-color="#F45E43" href="http://www.mywebsite.fr/reset-password?token=${data.token}">${ctx.i18n.__('mail.reset-pwd.cta')}</mj-button>
       </mj-column>
     </mj-section>
   </mj-body>
