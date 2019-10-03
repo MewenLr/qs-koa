@@ -7,7 +7,7 @@ const router = new Router()
 module.exports = router
   .post(
     '/user/register',
-    (ctx, next) => translation(ctx, next),
+    // (ctx, next) => translation(ctx, next),
     userController.regUser,
   )
   .get(

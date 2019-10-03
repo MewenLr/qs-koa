@@ -14,18 +14,20 @@ const transporter = nodemailer.createTransport({
 })
 
 module.exports = (ctx, email, mailType, data) => new Promise(async (res, rej) => {
-  const trans = ctx.state.transFile
 
   const dict = {
     confirmUserMail: {
-      subject: trans.confirmUserSubject(),
-      html: confirmUserHtml(trans, data),
-      success: trans.successConfirmUserMail(),
+      subject: ctx.i18n.__('mail.confirm-user.subject'),
+      // subject: trans.confirmUserSubject(),
+      html: confirmUserHtml(ctx, data),
+      success: ctx.i18n.__('success.confirm-mail'),
     },
     resetPwdMail: {
-      subject: trans.resetPwdSubject(),
-      html: resetPwdHtml(trans, data),
-      success: trans.successResetPwdMail(),
+      subject: ctx.i18n.__('mail.reset-pwd.subject'),
+      // subject: trans.resetPwdSubject(),
+      html: resetPwdHtml(ctx, data),
+      success: ctx.i18n.__('success.reset-pwd-mail'),
+      // success: trans.successResetPwdMail(),
     },
   }
 

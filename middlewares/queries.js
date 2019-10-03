@@ -1,12 +1,10 @@
 module.exports = (ctx) => {
-  const trans = ctx ? ctx.state.transFile : undefined
-
   return {
 
     save: (data, key) => new Promise((res, rej) => {
       data.save((err) => {
-        if (err) rej({ code: 400, msg: trans.failSave(key) })
-        res({ code: 202, msg: trans.docSaved(key) })
+        if (err) rej({ code: 400, msg: ctx.i18n.__('failure.save', ctx.i18n.__(`key.${key}`)) })
+        res({ code: 202, msg: ctx.i18n.__('success.doc-saved', ctx.i18n.__(`key.${key}`)) })
       })
     }),
 
@@ -14,7 +12,7 @@ module.exports = (ctx) => {
       const [key, value] = Object.entries(query)[0]
       collection.countDocuments(query, (err, count) => {
         if (err) rej({ code: 400, msg: err })
-        if (count > 0) rej({ code: 400, msg: trans.docExists(key, value) })
+        if (count > 0) rej({ code: 400, msg: ctx.i18n.__('error.doc-exists', ctx.i18n.__(`key.${key}`), value) })
         res()
       })
     }),
@@ -31,7 +29,7 @@ module.exports = (ctx) => {
       const [key, value] = Object.entries(query)[0]
       collection.findOne(query, (err, doc) => {
         if (err) rej({ code: 400, msg: err })
-        if (!doc) rej({ code: 404, msg: trans.docNotFound(key, value) })
+        if (!doc) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.${key}`), value) })
         res({ code: 200, doc })
       })
     }),
@@ -43,9 +41,9 @@ module.exports = (ctx) => {
         { $set: updates, $unset: unset },
         { new: true, useFindAndModify: false },
         (err, doc) => {
-          if (err) rej({ code: 400, msg: trans.failUpdate() })
-          if (!doc) rej({ code: 404, msg: trans.docNotFound(key, value) })
-          res({ code: 200, msg: trans.successUpdate(), doc })
+          if (err) rej({ code: 400, msg: ctx.i18n.__('failure.update') })
+          if (!doc) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.${key}`), value) })
+          res({ code: 200, msg: ctx.i18n.__('success.update'), doc })
         },
       )
     }),
@@ -53,9 +51,9 @@ module.exports = (ctx) => {
     deleteOne: (collection, query, key) => new Promise((res, rej) => {
       collection.deleteOne(query, (err, doc) => {
         const value = Object.values(query)[0]
-        if (err) rej({ code: 400, msg: trans.failDelete() })
-        if (!doc.deletedCount) rej({ code: 404, msg: trans.docNotFound(key, value) })
-        res({ code: 200, msg: trans.successDelete(key) })
+        if (err) rej({ code: 400, msg: ctx.i18n.__('failure.delete') })
+        if (!doc.deletedCount) rej({ code: 404, msg: ctx.i18n.__('error.doc-not-found', ctx.i18n.__(`key.${key}`), value) })
+        res({ code: 200, msg: ctx.i18n.__('success.delete', ctx.i18n.__(`key.${key}`)) })
       })
     }),
 

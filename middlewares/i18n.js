@@ -4,8 +4,10 @@ const locale = require('koa-locale')
 module.exports = (app) => {
   locale(app)
   app.use(i18n(app, {
-    directory: './locales',
+    directory: './config/translations',
     locales: ['fr', 'en'],
+    defaultLocale: 'fr',
     extension: '.json',
+    filePermissions: '755',
   }))
 }

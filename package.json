@@ -9,7 +9,9 @@
     "start": "node server",
     "lint": "eslint --ext .js ./",
     "mjml": "./node_modules/.bin/mjml",
-    "lint:fix": "eslint --ext .js ./ --fix"
+    "lint:fix": "eslint --ext .js ./ --fix",
+    "lint:trans": "eslint --ext .json --format node_modules/eslint-plugin-i18n-json/formatter.js ./config/translations/",
+    "lint:trans:fix": "eslint --ext .json --format node_modules/eslint-plugin-i18n-json/formatter.js ./config/translations/ --fix"
   },
   "dependencies": {
     "bcryptjs": "*",
@@ -29,12 +31,13 @@
     "passport-jwt": "*"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-i18n-json": "^2.4.2",
+    "eslint-plugin-import": "^2.17.2",
     "jest": "*",
     "nodemon": "*",
-    "supertest": "*",
-    "eslint": "^5.16.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-config-airbnb-base": "^13.1.0"
+    "supertest": "*"
   },
   "jest": {
     "testEnvironment": "node"

@@ -5,7 +5,7 @@ module.exports = {
     "node": true,
     "jest": true
   },
-  "extends" : "airbnb-base",
+  "extends" : ["airbnb-base"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -14,14 +14,15 @@ module.exports = {
     "ecmaVersion": 2018
   },
   "rules": {
-    "semi": [2, "never"],
-    "no-throw-literal": 0,
-    "no-return-assign": 0,
-    "quotes": [2, "single"],
-    "no-underscore-dangle": 0,
-    "prefer-promise-reject-errors": 0,
-    "no-shadow": [2, { "allow": ["err"] }],
-    "import/no-unresolved": [2, { "caseSensitive": false }],
+    "semi": ["error", "never"],
+    "no-throw-literal": "off",
+    "no-return-assign": "off",
+    "quotes": ["error", "single"],
+    "no-underscore-dangle": "off",
+    "prefer-promise-reject-errors": "off",
+    "no-shadow": ["error", { "allow": ["err"] }],
+    "import/no-unresolved": ["error", { "caseSensitive": false }],
+    "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": true }],
     "object-curly-newline": ["error", {
       "ObjectPattern": { "multiline": true },
       "ExportDeclaration": { "multiline": true }
