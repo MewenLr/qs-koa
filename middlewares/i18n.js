@@ -6,7 +6,7 @@ module.exports = (app) => {
   app.use(i18n(app, {
     directory: './config/translations',
     locales: ['fr', 'en'],
-    defaultLocale: 'fr',
+    defaultLocale: 'en',
     extension: '.json',
     filePermissions: '755',
     updateFiles: false,
