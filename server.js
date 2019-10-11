@@ -1,12 +1,15 @@
 const Koa = require('koa')
 const jwt = require('koa-jwt')
 const cors = require('koa-cors')
+const helmet = require('koa-helmet')
 const passport = require('koa-passport')
 const bodyParser = require('koa-bodyparser')
 const routes = require('./routes/routes')
 const config = require('./config/parameters')
 
 const app = new Koa()
+
+app.use(helmet())
 
 // middlewares
 require('dotenv').config()

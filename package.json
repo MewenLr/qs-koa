@@ -28,7 +28,8 @@
     "mjml": "*",
     "mongoose": "*",
     "nodemailer": "*",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "koa-helmet": "*"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
