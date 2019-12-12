@@ -10,22 +10,29 @@ const knightUser = require('../config/knight-lists/knight-user')
 
 module.exports = {
 
+  /* Mongo validator
+     check type and emptiness (knight)
+     check regex
+     check if exist */
+
   regUser: async (ctx) => {
     const { username, email, password } = ctx.request.body
-    const knightList = knightUser.regUser(username, password, email)
+    // const knightList = knightUser.regUser(username, password, email)
 
     try {
-      await knight(ctx, knightList)
-      await rules(ctx).validateUsername(username)
-      await rules(ctx).validatePassword(password)
-      await rules(ctx).validateEmail(email)
-      await queries(ctx).check(User, { username })
-      await queries(ctx).check(User, { email })
+      // await knight(ctx, knightList)
+      // await rules(ctx).validateUsername(username)
+      // await rules(ctx).validatePassword(password)
+      // await rules(ctx).validateEmail(email)
+      // await queries(ctx).check(User, { username })
+      // await queries(ctx).check(User, { email })
       const newUser = new User({ username, password, email })
       newUser.password = await bcrypt(ctx).hash(newUser.password)
-      await queries(ctx).save(newUser, 'user')
-      const token = jwToken.sign({ user: newUser._id }, config.secret, { expiresIn: 86400 })
-      const res = await mailer(ctx, email, 'confirmUserMail', { token })
+      const res = await queries(ctx).save(newUser, 'user')
+
+      // await queries(ctx).save(newUser, 'user')
+      // const token = jwToken.sign({ user: newUser._id }, config.secret, { expiresIn: 86400 })
+      // const res = await mailer(ctx, email, 'confirmUserMail', { token })
       ctx.status = res.code
       ctx.body = { msg: res.msg }
     } catch (err) {
